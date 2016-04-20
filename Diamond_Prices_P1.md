@@ -1,20 +1,17 @@
----
-title: "Diamond Prices EDA Problem Set 3"
-author: "Manu Kushwaha"
-date: "April 11, 2016"
-output: 
-  html_document:
-    keep_md: true
----
+# Diamond Prices EDA Problem Set 3
+Manu Kushwaha  
+April 11, 2016  
 
-```{r warning = FALSE}
+
+```r
 # Loading the required libraries
 library(ggplot2)
 suppressMessages(library(dplyr))
 suppressMessages(library(gridExtra))
 ```
 
-```{r load diamonds dataset}
+
+```r
 # Loading the diamonds dataset into "d" and creating the scatterplot
 d <- diamonds
 ```
@@ -22,8 +19,23 @@ d <- diamonds
 ### Q1) Diamonds
 #### Questions a), b) and c) below can be addressed by the following command:
 
-```{r number of observations in dataset}
+
+```r
 str(d)
+```
+
+```
+## Classes 'tbl_df', 'tbl' and 'data.frame':	53940 obs. of  10 variables:
+##  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+##  $ cut    : Ord.factor w/ 5 levels "Fair"<"Good"<..: 5 4 2 4 2 3 3 3 1 3 ...
+##  $ color  : Ord.factor w/ 7 levels "D"<"E"<"F"<"G"<..: 2 2 2 6 7 7 6 5 2 5 ...
+##  $ clarity: Ord.factor w/ 8 levels "I1"<"SI2"<"SI1"<..: 2 3 5 4 2 6 7 3 4 5 ...
+##  $ depth  : num  61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+##  $ table  : num  55 61 65 58 58 57 57 55 61 61 ...
+##  $ price  : int  326 326 327 334 335 336 336 337 337 338 ...
+##  $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+##  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+##  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
 ```
 * a). How many observations are in the dataset?
     + Answer: 53940 observations
@@ -33,7 +45,8 @@ str(d)
     + Answer: 3 ordered factors (cut, color and clarity)
 * d). what letter represents the best color for a diamond?
     + Answer: D represents the best color for a diamond
-```{r best color diamond}
+
+```r
 # This can be done by the following command:
 #?diamonds
 ```
@@ -44,27 +57,51 @@ str(d)
 ### Q2) Price Histogram
 * Create a histogram of the price of all the diamonds in the diamond data set
 
-```{r price histogram}
+
+```r
 qplot(x = price, data = d,
       color = I("black"), fill = I("#F79420"))
 ```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](Diamond_Prices_P1_files/figure-html/price histogram-1.png)\
 
 ***
 
 ### Q3) Price Histogram Summary
 * Describe the shape and the center of the price distribution. Include summary statistics like the mean and median
 
-```{r median price}
+
+```r
 median(d$price)
 ```
 
-```{r mean price}
-mean(d$price)
+```
+## [1] 2401
+```
 
+
+```r
+mean(d$price)
+```
+
+```
+## [1] 3932.8
+```
+
+```r
 # Calculate the % of diamonds greater than the mean
 nrow(subset(d,price>3932.8))/nrow(d)
+```
 
+```
+## [1] 0.3644234
+```
 
+```r
 # Alternatively, summary(d$price) command could also have been used, but would give rounded off figures
 ```
 
@@ -79,20 +116,35 @@ nrow(subset(d,price>3932.8))/nrow(d)
 #### Questions:
 * a). How many diamonds cost less then $500?
   
-```{r diamonds less than $500}
+
+```r
 sum(d$price < 500)
+```
+
+```
+## [1] 1729
 ```
 
 * b). How many diamonds cost less than $250?
 
-```{r diamonds less than $250}
+
+```r
 sum(d$price < 250)
+```
+
+```
+## [1] 0
 ```
 
 * c). How many diamonds cost $15,000 or more?
 
-```{r diamonds greater than or equal to $15000}
+
+```r
 sum(d$price >= 15000)
+```
+
+```
+## [1] 1656
 ```
 
 ***
@@ -101,12 +153,23 @@ sum(d$price >= 15000)
 * Explore the largest peak in the price histogram you created earlier
 * Try limiting the x-axis, altering the bin width, and setting different breaks on the x-axis
 
-```{r}
+
+```r
 qplot(x = price, data = d,
       binwidth = 50,
       color = I("black"), fill = I("#F79420")) +
   scale_x_continuous(breaks = seq(200,3000,200), limits = c(200,3000))
 ```
+
+```
+## Warning: Removed 23604 rows containing non-finite values (stat_bin).
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+![](Diamond_Prices_P1_files/figure-html/unnamed-chunk-2-1.png)\
 
 ***
 
@@ -114,10 +177,17 @@ qplot(x = price, data = d,
 * Break out the histogram of diamond prices by cut
 * You should have five histograms in separate panels on your resulting plot
 
-```{r price by cut histograms}
+
+```r
 qplot(x = price, data = d,color = I("black"), fill = I("#F79420")) + 
   facet_wrap(~cut)
 ```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](Diamond_Prices_P1_files/figure-html/price by cut histograms-1.png)\
 
 #### Do you think the distributions look the same or different?
 * The distributions all appear to be right skewed with long tails with greater number of diamonds at the lower price segment
@@ -127,13 +197,26 @@ qplot(x = price, data = d,color = I("black"), fill = I("#F79420")) +
 ### Q7) Price by Cut
 * Anwser the questions below. Check more than one option if there are ties
 
-```{r price by cut}
+
+```r
 d %>% 
   group_by(cut) %>% 
   summarise(max_price = max(price),
             min_price = min(price),
             median_price = median(price)) %>% 
   arrange(desc(max_price))
+```
+
+```
+## Source: local data frame [5 x 4]
+## 
+##         cut max_price min_price median_price
+##      (fctr)     (int)     (int)        (dbl)
+## 1   Premium     18823       326       3185.0
+## 2 Very Good     18818       336       2648.0
+## 3     Ideal     18806       326       1810.0
+## 4      Good     18788       327       3050.5
+## 5      Fair     18574       337       3282.0
 ```
 
 
@@ -149,11 +232,18 @@ c) Which cut has the lowest median price?   |       |       |           |       
 * Look up the documentation for facet_wrap in R Studio 
 * Then, scroll back up and add a parameter to facet_wrap so that the y-axis in the histograms is not fixed. You want the y-axis to be different for each histogram
 
-```{r price by cuts with free y scale}
+
+```r
 qplot(x = price, data = d,
       color = I('black'), fill = I('#099DD9')) + 
   facet_wrap(~cut, scales = "free_y")
 ```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](Diamond_Prices_P1_files/figure-html/price by cuts with free y scale-1.png)\
 
 ***
 
@@ -163,12 +253,15 @@ qplot(x = price, data = d,
 * You can make adjustments to the code from the previous exercise to get started
 * Adjust the bin width and transform the scale of the x-axis using log10
 
-```{r price per carat by cut}
+
+```r
 qplot(x = log10(price/carat), data = d, 
       binwidth = 0.025,
       color = I('black'), fill = I('#099DD9')) + 
   facet_wrap(~cut, scales = "free_y")
 ```
+
+![](Diamond_Prices_P1_files/figure-html/price per carat by cut-1.png)\
 
 
 ***
@@ -178,7 +271,8 @@ qplot(x = log10(price/carat), data = d,
 * Investigate the price of diamonds using box plots, numerical summaries, and one of the following categorical variables: cut, clarity, or color
 
 * Creating 2 box plots for Price vs color with varying y-axis
-```{r price vs color boxplots}
+
+```r
 p1 <- qplot(x = color, y = price,
       data = d,
       geom = "boxplot",
@@ -196,9 +290,42 @@ p2 <- qplot(x = color, y = price,
 grid.arrange(p1, p2, ncol = 2)
 ```
 
+![](Diamond_Prices_P1_files/figure-html/price vs color boxplots-1.png)\
+
 * Creating a summary of Price by color
-```{r summary of price by color}
+
+```r
 by(d$price, d$color, summary)
+```
+
+```
+## d$color: D
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     357     911    1838    3170    4214   18690 
+## -------------------------------------------------------- 
+## d$color: E
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     326     882    1739    3077    4003   18730 
+## -------------------------------------------------------- 
+## d$color: F
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     342     982    2344    3725    4868   18790 
+## -------------------------------------------------------- 
+## d$color: G
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     354     931    2242    3999    6048   18820 
+## -------------------------------------------------------- 
+## d$color: H
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     337     984    3460    4487    5980   18800 
+## -------------------------------------------------------- 
+## d$color: I
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     334    1120    3730    5092    7202   18820 
+## -------------------------------------------------------- 
+## d$color: J
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     335    1860    4234    5324    7695   18710
 ```
 
 #### Do you see any trends or oddities in your results?
@@ -225,8 +352,32 @@ by(d$price, d$color, summary)
     + Third quartile (75%)? - 7695
   
 * Questions c) and d) can be answered using the following command
-```{r IQR for best color diamond}
+
+```r
 by(d$price, d$color, IQR)
+```
+
+```
+## d$color: D
+## [1] 3302.5
+## -------------------------------------------------------- 
+## d$color: E
+## [1] 3121
+## -------------------------------------------------------- 
+## d$color: F
+## [1] 3886.25
+## -------------------------------------------------------- 
+## d$color: G
+## [1] 5117
+## -------------------------------------------------------- 
+## d$color: H
+## [1] 4996.25
+## -------------------------------------------------------- 
+## d$color: I
+## [1] 6081.25
+## -------------------------------------------------------- 
+## d$color: J
+## [1] 5834.5
 ```
 * c). What is the IQR for diamonds with the best color?
     + 3302.5 (color D)
@@ -239,13 +390,15 @@ by(d$price, d$color, IQR)
 ### Q12) Price per Carat Box Plots by Color
 * Investigate the price per carat of diamonds across the different colors of diamonds using boxplots
 
-```{r price per carat object}
+
+```r
 # Defining Price per carat object
 Price.per.Carat <- d$price / d$carat
 ```
 
 * Creating the Price.per.Carat by Color boxplots with varying y-axis
-```{r price per carat vs color boxplots}
+
+```r
 p1 <- qplot(x = color, y = Price.per.Carat,
       data = d,
       geom = "boxplot",
@@ -263,6 +416,8 @@ p2 <- qplot(x = color, y = Price.per.Carat,
 grid.arrange(p1, p2, ncol = 2)
 ```
 
+![](Diamond_Prices_P1_files/figure-html/price per carat vs color boxplots-1.png)\
+
 * Observations from the Box Plots:
     + There is a large number of outliers (shown by the black dots) in the chart for the 1st four colors
     + Minimal price per carat variance is noticed below the median threshold across all colors; meaning that 50% of diamonds in each color category fall within the same price range (i.e. color does not appear to be so important)  
@@ -276,13 +431,24 @@ grid.arrange(p1, p2, ncol = 2)
 ### Q12) Carat Frequency Polygon
 * Investigate the weight of the diamonds (carat) using a frequency polygon. Use different bin widths to see how the frequency polygon changes
 
-```{r carat freq polygon}
+
+```r
 qplot(x = carat, data = d,
       color = I("red"), 
       geom = "freqpoly", 
       binwidth = 0.01) + 
   scale_x_continuous(breaks = seq(0,3.5,0.1), limits = c(0,3.5))
 ```
+
+```
+## Warning: Removed 9 rows containing non-finite values (stat_bin).
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_path).
+```
+
+![](Diamond_Prices_P1_files/figure-html/carat freq polygon-1.png)\
 
 #### What carat size has a count greater than 2000?
 * Answer: 0.3 and 1.01
